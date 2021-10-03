@@ -1,0 +1,20 @@
+task_name:
+  script:
+    file: ${HOME}/here/goes.py
+    entrypoint: my_function
+  repeat:
+    frequency: 'daily'
+    execution_rules:
+      week_day: ["mon", "tue", "wed", "thu", "fri"]
+      time: ["10:00"]
+test_task:
+  script:
+    file: ${HOME}/testing/imports/my_script.py
+    entrypoint: my_func
+    args:
+      - "Peter"
+  repeat:
+    frequency: 'daily'
+    execution_rules:
+      week_day: ["sat", "sun"]
+      time: ["20:28"]
