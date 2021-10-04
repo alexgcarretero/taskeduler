@@ -7,7 +7,7 @@ class FrequencyError(Exception):
     pass
 
 
-def add_delta(base_datetime: 'datetime.datetime', frequency: str) -> 'datetime.datetime':
+def _add_delta(base_datetime: 'datetime.datetime', frequency: str) -> 'datetime.datetime':
     delta = {
         "yearly": {
             "days": 365 + int(isleap(2020)),
@@ -42,9 +42,9 @@ class Scheduler:
         self.next_execution = self._execution_rules_manager.next_compliant_date()
     
     def __calculate_next_execution(self, base_datetime: 'datetime.datetime') -> 'datetime.datetime':
-        updated_datetime = add_delta(base_datetime, self._frequency)
+        updated_datetime = _add_delta(base_datetime, self._frequency)
         while not self._execution_rules_manager.check_execution_rules(updated_datetime):
-            updated_datetime = add_delta(updated_datetime, self._frequency)
+            updated_datetime = _add_delta(updated_datetime, self._frequency)
         return updated_datetime
 
     def calculate_next_execution(self) -> None:

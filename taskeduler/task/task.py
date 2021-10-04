@@ -1,5 +1,6 @@
-from scheduler.scheduler import Scheduler
 from threading import Thread, Event
+
+from taskeduler.scheduler import Scheduler
 
 
 class Task:

@@ -3,9 +3,8 @@ import yaml
 import os
 import re
 
-from scheduler.execution_rules_manager import ExecutionRulesManager
-from scheduler.scheduler import Scheduler
-from task_manager.task import Task
+from taskeduler.scheduler import Scheduler, ExecutionRulesManager
+from taskeduler.task import Task
 
 
 class TaskParser:

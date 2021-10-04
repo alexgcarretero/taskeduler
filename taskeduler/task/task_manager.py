@@ -1,4 +1,4 @@
-from task_manager.task import Task
+from taskeduler.task.task import Task
 
 from threading import Thread, Event
 from time import sleep
