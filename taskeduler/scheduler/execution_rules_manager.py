@@ -1,7 +1,7 @@
 import datetime as dt
 from calendar import monthrange
 
-from utils import get_weekday, get_month, range_check
+from taskeduler.utils import get_weekday, get_month, range_check
 
 
 class ExecutionRuleNotAllowed(Exception):

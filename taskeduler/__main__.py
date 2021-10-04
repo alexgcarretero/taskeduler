@@ -2,8 +2,8 @@ import os
 import traceback
 from sys import argv
 
-from task_parser.task_parser import TaskParser
-from task_manager.task_manager import TaskManager
+from taskeduler.task import TaskManager
+from taskeduler.parser import TaskParser
 
 USAGE = "python3 -m scheduler yaml_file"
 

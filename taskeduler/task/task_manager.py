@@ -1,7 +1,7 @@
-from taskeduler.task.task import Task
-
-from threading import Thread, Event
 from time import sleep
+from threading import Thread, Event
+
+from taskeduler.task.task import Task
 
 
 class TaskAlreadyExists(Exception):

@@ -1,7 +1,5 @@
-from scheduler.execution_rules_manager import ExecutionRulesManager
-from scheduler.scheduler import Scheduler
-from task_manager.task import Task
-from task_manager.task_manager import TaskManager
+from taskeduler.scheduler import Scheduler, ExecutionRulesManager
+from taskeduler.task import Task, TaskManager
 
 
 def daily_greeting():

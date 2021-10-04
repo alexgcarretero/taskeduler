@@ -1,10 +1,10 @@
-import importlib.util
-import yaml
 import os
 import re
+import yaml
+import importlib.util
 
-from taskeduler.scheduler import Scheduler, ExecutionRulesManager
 from taskeduler.task import Task
+from taskeduler.scheduler import Scheduler, ExecutionRulesManager
 
 
 class TaskParser:

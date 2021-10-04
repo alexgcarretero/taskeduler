@@ -22,7 +22,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["taskeduler"],
+    packages=["taskeduler", "taskeduler.parser", "taskeduler.scheduler", "taskeduler.task", "taskeduler.utils"],
     include_package_data=True,
     install_requires=["PyYAML"],
     entry_points={
