@@ -39,8 +39,6 @@ class TaskParser:
             entrypoint_name = task_info['script']['entrypoint']
             entrypoint_args = task_info['script'].get('args', [])
             entrypoint_kwargs = task_info['script'].get('kwargs', {})
-
-            scheduler_frequency = task_info['repeat']['frequency']
             scheduler_rules = task_info['repeat'].get('execution_rules', {})
 
             # Import the entrypoint
@@ -50,17 +48,15 @@ class TaskParser:
             spec.loader.exec_module(module)
             entrypoint = getattr(module, entrypoint_name)
 
-            # Create the scheduler
-            scheduler = Scheduler(
-                frequency=scheduler_frequency,
-                execution_rules_manager=ExecutionRulesManager(**scheduler_rules)
-            )
-
-            # Create the task, and add it to the task dict
-            tasks[task_name] = Task(
-                scheduler=scheduler,
-                task=entrypoint,
-                args=entrypoint_args,
-                kwargs=entrypoint_kwargs
-            )
+            for scheduler_frequency in task_info['repeat']['frequency']:
+                # Create the task, and add it to the task dict
+                tasks[f"{task_name}_{scheduler_frequency}"] = Task(
+                    scheduler=Scheduler(
+                        frequency=scheduler_frequency,
+                        execution_rules_manager=ExecutionRulesManager(**scheduler_rules)
+                    ),
+                    task=entrypoint,
+                    args=entrypoint_args,
+                    kwargs=entrypoint_kwargs
+                )
         return tasks
