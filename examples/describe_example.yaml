@@ -3,7 +3,7 @@ task_name:
     file: ${HOME}/here/goes.py
     entrypoint: my_function
   repeat:
-    frequency: 'daily'
+    frequency: ['daily']
     execution_rules:
       week_day: ["mon", "tue", "wed", "thu", "fri"]
       time: ["10:00"]
@@ -14,7 +14,7 @@ test_task:
     args:
       - "Peter"
   repeat:
-    frequency: 'daily'
+    frequency: ['daily']
     execution_rules:
       week_day: ["sat", "sun"]
       time: ["20:28"]
