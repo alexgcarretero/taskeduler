@@ -1,20 +1,26 @@
-import importlib.util
-import yaml
 import os
 import re
+import yaml
+import importlib.util
 
-from scheduler.execution_rules_manager import ExecutionRulesManager
-from scheduler.scheduler import Scheduler
-from task_manager.task import Task
+from taskeduler.task import Task
+from taskeduler.scheduler import Scheduler, ExecutionRulesManager
 
 
 class TaskParser:
+    """
+    This class handles the parsing of the YAML files, transforming the data into Tasks.
+
+    Args:
+        task_file(str): The path to the filename to parse.
+    """
     def __init__(self, task_file: str):
         self.task_file = task_file
         self.tasks = self.parse_tasks(task_file)
     
     @staticmethod
     def parse_yaml(yaml_file: str, resolve_environment: bool=True) -> dict:
+        """This function loads the YAML into a dict"""
         with open(yaml_file) as f:
             yaml_string = f.read()
         
@@ -27,6 +33,10 @@ class TaskParser:
         return yaml.safe_load(yaml_string)
     
     def parse_tasks(self, task_file: str) -> dict:
+        """
+        This method transforms the data in the yaml file to a dictionary (str, Task)
+        with the names of the tasks and the proper tasks.
+        """
         if task_file is None:
             task_file = self.task_file
         
