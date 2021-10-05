@@ -5,6 +5,7 @@ from taskeduler.utils import get_weekday, get_month, range_check
 
 
 class ExecutionRuleNotAllowed(Exception):
+    """Raised if a rule does not exist."""
     def __init__(self, execution_rule, allowed_rules=None):
         self.message = f"Execution Rule not allowed: '{execution_rule}'."
         if allowed_rules is not None:
@@ -12,10 +13,23 @@ class ExecutionRuleNotAllowed(Exception):
 
 
 class ExecutionRuleError(Exception):
+    """Raised if there is some error checking an Execution Rule."""
     pass
 
 
 class ExecutionRulesManager:
+    """
+    This class manages all the Execution Rule logic.
+    Parses them and calculates the next possible execution date.
+
+    Args:
+        **execution_rules (kwargs): The execution rules and their values, as keyword arguments. The values should be an iterable.
+            Currently is only supported:
+                - time
+                - month_days
+                - week_days
+                - month
+    """
     EXECUTION_RULES_ORDER = ("time", "month_days", "week_days", "month")
     ALLOWED_EXECUTION_RULES = set(EXECUTION_RULES_ORDER)
 
@@ -23,6 +37,7 @@ class ExecutionRulesManager:
         self.execution_rules = self._get_rules(execution_rules)
     
     def _get_rules(self, input_rules: dict) -> dict:
+        """Execution Rules parser and checker."""
         execution_rules = {}
         for execution_rule, value in input_rules.items():
             if execution_rule not in self.ALLOWED_EXECUTION_RULES:
@@ -48,6 +63,7 @@ class ExecutionRulesManager:
         return execution_rules
     
     def _check_rule(self, check_date: 'datetime.datetime', execution_rule: str) -> bool:
+        """Checks if a date is compliant with the execution rules."""
         rule_checkers = {
             "week_days": lambda date: get_weekday(date.weekday()) in self.execution_rules["week_days"],
             "months": lambda date: get_month(date.month()) in self.execution_rules["months"],
@@ -59,6 +75,7 @@ class ExecutionRulesManager:
     
     @staticmethod
     def _add_delta(date: 'datetime.datetime', execution_rule: str) -> 'datetime.datetime':
+        """Adds a delta to the date, depending on the execution rule selected."""
         objective_fields = {
             "week_days": {"days": 1},
             "months": {"days": monthrange(date.year, date.month)[1]},
@@ -68,11 +85,13 @@ class ExecutionRulesManager:
         return date + dt.timedelta(**objective_fields[execution_rule])
 
     def check_execution_rules(self, check_date: 'datetime.datetime'=None) -> bool:
+        """Checks if a date is compliant with all the execution rules."""
         if check_date is None:
             check_date = dt.datetime.now()
         return all(self._check_rule(check_date, execution_rule) for execution_rule in self.execution_rules)
     
     def next_compliant_date(self, check_date: 'datetime.datetime'=None) -> 'datetime.datetime':
+        """Calculates the next date that satisfies all the execution rules."""
         now = dt.datetime.now()
         if check_date is None:
             # Set the first check_date to now, setting to 0 the seconds and miliseconds
