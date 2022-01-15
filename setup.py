@@ -10,7 +10,7 @@ README = (HERE / "readme.md").read_text()
 # This call to setup() does all the work
 setup(
     name="taskeduler",
-    version="1.0.0",
+    version="1.0.1",
     description="Schedule your tasks, easily",
     long_description=README,
     long_description_content_type="text/markdown",
