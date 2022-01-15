@@ -1,9 +1,7 @@
-import os
 import traceback
 from sys import argv
 
-from taskeduler.task import TaskManager
-from taskeduler.parser import TaskParser
+from taskeduler import schedule
 
 """
 If the module is run as a proper module: python3 -m taskeduler /path/to/yaml_file.yaml
@@ -15,40 +13,29 @@ described tasks 24/7 nonstop.
 USAGE = "python3 -m scheduler yaml_file"
 
 
-class UsageError(Exception):
-    """Raised when there are errors in the usage of the module."""
-    def __init__(self, extra_message: str=""):
-        if extra_message:
+def usage_error(extra_message: str=""):
+    if extra_message:
             extra_message = f"\n{extra_message}"
-        super().__init__(f"USAGE: {USAGE}{extra_message}")
-
-
-def run(task_manager):
-    """Parse the tasks and run them."""
-    try:
-        # Parse yaml
-        yaml_file = argv[1]
-        if not os.path.exists(yaml_file):
-            raise UsageError(f"The file '{yaml_file}' does not exist.")
-        task_parser = TaskParser(yaml_file)
-        
-        # Create TaskManager and add all tasks
-        
-        for task_name, task in task_parser.tasks.items():
-            task_manager.add_task(task_name, task)
-        task_manager.loop.start()
-    except IndexError:
-        raise UsageError()
+    print(f"USAGE: {USAGE}{extra_message}")
 
 
 def main():
     """Create a TaskManager and manage the errors if necessary."""
-    task_manager = TaskManager()
+    # Create the TaskManager, and schedule the tasks
     try:
-        run(task_manager)
-    except UsageError as e:
-        print(e)
-        return -1
+        try:
+            yaml_file = argv[1]
+            task_manager = schedule(yaml_file)
+        except (IndexError, FileNotFoundError) as e:
+            usage_error(str(e))
+            return -1
+    except Exception:
+        traceback.print_exc()
+        return 1
+    
+    # Run the loop
+    try:
+        task_manager.loop.start(in_thread=False)
     except Exception:
         traceback.print_exc()
         return 1
