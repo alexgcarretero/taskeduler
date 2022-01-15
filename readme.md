@@ -75,6 +75,25 @@ To build the `Task` object, first is needed to create a `Scheduler`. Then, to ex
 >>> task_manager.loop.start()
 ```
 
+You can also load a YAML from the python code!
+
+```python
+>>> from taskeduler import schedule
+>>> my_yaml = "/path/to/my/file.yaml"
+>>> task_manager = schedule(yaml_file=my_yaml)
+>>> task_manager.loop.start()
+```
+
+Even with an already existing `task_manager`:
+
+```python
+>>> from taskeduler import TaskManager, schedule
+>>> task_manager = TaskManager()
+>>> my_yaml = "/path/to/my/file.yaml"
+>>> schedule(yaml_file=my_yaml, task_manager=task_manager)
+>>> task_manager.loop.start()
+```
+
 ## Scheduler rules
 The **frequencies** determine the period of wait between the task executions. The **execution rules** determine some aditional *"checks"* that must be met, represented by a list of possible values.
 
